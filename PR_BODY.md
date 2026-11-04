@@ -21,7 +21,11 @@ A left-sidebar panel that browses the filesystem of the machine the Harness runs
 - text file previews (the first 256 KiB);
 - inline image previews (PNG, JPEG, GIF, WebP, AVIF, SVG);
 - file downloads, handed to the browser through the Harness's own authenticated file route, under the file's own name;
-- folder creation — the plugin is otherwise read-only: it cannot write, delete or rename.
+- file uploads into the directory that is open — one Remote call per file, carrying the bytes as canonical base64, never replacing a file that is already there;
+- folder creation;
+- twelve languages: every visible string goes through `ctx.locale`, and the panel adds its languages to the Harness language list.
+
+Apart from those two writes the plugin is read-only: it cannot modify, delete or rename an existing file.
 
 The Host half is a `ctx.hostFiles` service over `node:fs/promises`, exposed on the Remote transport; the Client half is a Remote contribution that registers a `sidebar.panellist` entry and a `main` panel. It has no dependencies and no build step, so the attached tarball is exactly what the repository contains.
 
